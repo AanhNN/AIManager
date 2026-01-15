@@ -18,6 +18,14 @@ interface StoreContextType {
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
+// Helper to generate IDs safely in all environments
+const generateId = () => {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+};
+
 export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -36,7 +44,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // Product Actions
   const addProduct = (name: string, description: string) => {
     const newProduct: Product = {
-      id: crypto.randomUUID(),
+      id: generateId(),
       name,
       description,
       createdAt: Date.now(),
@@ -74,7 +82,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     // Create Account if not exists
     if (!targetAccount) {
       targetAccount = {
-        id: crypto.randomUUID(),
+        id: generateId(),
         email,
         status: 'active', // Default state is now 'active' (Ready)
         countdownStartAt: null,
@@ -91,7 +99,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     
     if (!exists && targetAccount) {
       const newLink: ProductAccount = {
-        id: crypto.randomUUID(),
+        id: generateId(),
         productId,
         accountId: targetAccount.id,
       };
