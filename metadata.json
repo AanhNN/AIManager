@@ -1,0 +1,5 @@
+{
+  "name": "AI Account Manager",
+  "description": "A personal manager for AI product accounts with persistent countdown tracking.",
+  "requestFramePermissions": []
+}
